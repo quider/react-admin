@@ -27,10 +27,14 @@ export default {
         return Promise.resolve();
     },
     checkError: error => {
-        // ...
+        console.error(error );
     },
     checkAuth: () => {
-        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
+        let token = localStorage.getItem('token')
+        if (token == null){ return Promise.reject()}
+        const decodedToken = decodeJwt(token);
+        new Date(decodedToken.exp * 1000)
+        return new Date(decodedToken.exp * 1000) > new Date() ? Promise.resolve() : Promise.reject();
     },
     getPermissions: () => {
         const role = localStorage.getItem('permissions');

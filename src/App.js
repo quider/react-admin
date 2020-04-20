@@ -1,30 +1,41 @@
 // in src/App.js
 import React from 'react';
-import { fetchUtils, Admin, Resource, ListGuesser } from 'react-admin';
+import {Admin, EditGuesser, fetchUtils, Resource} from 'react-admin';
 import rest from "ra-data-simple-rest";
 import Dashboard from "./Dashboard";
-import {PostCreate, PostEdit} from "./posts";
 import authProvider from "./authProvider";
 import {CurrencyList} from "./currencies";
 import {InvoiceList} from "./invoices/invoiceList";
 import {ContactList} from "./contacts/ContactList";
+import {ContactCreate} from "./contacts/ContactCreate";
+import polishMessages from 'ra-language-polish';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import {ContactEdit} from "./contacts/ContactEdit";
+import {ContactShow} from "./contacts/ContactShow";
+import {msq} from "./i18n/translations"
+import {InvoiceCreate} from "./invoices/InvoiceCreate";
 
 const httpClient = (url, options = {}) => {
-        if (!options.headers) {
-                options.headers = new Headers({ Accept: 'application/json' });
-        }
-        const token = localStorage.getItem('token');
-        options.headers.set('Authorization', `Bearer ${token}`);
-        return fetchUtils.fetchJson(url, options);
+    if (!options.headers) {
+        options.headers = new Headers({Accept: 'application/json'});
+    }
+    const token = localStorage.getItem('token');
+    options.headers.set('Authorization', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
 };
-const dataProvider = rest('http://localhost:8443', httpClient);
+export const dataProvider = rest('http://localhost:8443', httpClient);
+const messages = {...polishMessages, ...msq};
+const i18nProvider = polyglotI18nProvider(() => messages, 'pl');
+
 const App = () =>
-    <Admin dashboard={Dashboard} title="Wystaw fakturę" authProvider={authProvider} dataProvider={dataProvider} >
-        <Resource name="api/invoice" create={PostCreate} edit={PostEdit} options={{ label: 'Faktury' }}   list={InvoiceList} />
-        <Resource name="api/contact" options={{ label: 'Kontahenci', title: 'Konrahenci' }}  list={ContactList} />
-        {/*<Resource name="users" options={{ label: 'Użytkownicy' }}  list={ListGuesser} />*/}
-        {/*<Resource name="company" options={{ label: 'Moja działalność' }}  list={ListGuesser} />*/}
-        <Resource name="v1/currency" options={{ label: 'Waluty' }} list={CurrencyList} />
+    <Admin i18nProvider={i18nProvider} dashboard={Dashboard} title="Wystaw fakturę" authProvider={authProvider} dataProvider={dataProvider}>
+        {permissions => [
+            <Resource name="api/invoice" create={InvoiceCreate} edit={EditGuesser} options={{label: 'Faktury'}} list={InvoiceList}/>,
+            <Resource name="api/contact" edit={ContactEdit} show={ContactShow} create={ContactCreate} options={{label: 'Kontahenci'}} list={ContactList}/>,
+            permissions.includes('ROLE_ADMIN') ?
+                <Resource name="v1/currency" options={{label: 'Waluty'}} list={CurrencyList}/> : null,
+        ]}
     </Admin>;
+
 
 export default App;
