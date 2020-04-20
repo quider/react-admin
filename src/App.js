@@ -14,6 +14,8 @@ import {ContactEdit} from "./contacts/ContactEdit";
 import {ContactShow} from "./contacts/ContactShow";
 import {msq} from "./i18n/translations"
 import {InvoiceCreate} from "./invoices/InvoiceCreate";
+import {MyLayout} from "./menu/leftmenu";
+
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -27,11 +29,17 @@ export const dataProvider = rest('http://localhost:8443', httpClient);
 const messages = {...polishMessages, ...msq};
 const i18nProvider = polyglotI18nProvider(() => messages, 'pl');
 
+
 const App = () =>
-    <Admin i18nProvider={i18nProvider} dashboard={Dashboard} title="Wystaw fakturę" authProvider={authProvider} dataProvider={dataProvider}>
+    <Admin layout={MyLayout} i18nProvider={i18nProvider} dashboard={Dashboard} title="Wystaw fakturę"
+           authProvider={authProvider} dataProvider={dataProvider}>
         {permissions => [
-            <Resource name="api/invoice" create={InvoiceCreate} edit={EditGuesser} options={{label: 'Faktury'}} list={InvoiceList}/>,
-            <Resource name="api/contact" edit={ContactEdit} show={ContactShow} create={ContactCreate} options={{label: 'Kontahenci'}} list={ContactList}/>,
+            <Resource name="api/invoice" create={InvoiceCreate} edit={EditGuesser} options={{label: 'Faktury'}}
+                      list={InvoiceList}/>,
+            <Resource name="api/contact" edit={ContactEdit} show={ContactShow} create={ContactCreate}
+                      options={{label: 'Kontahenci'}} list={ContactList}/>,
+            <Resource name="payment-method"/>,
+            // <Resource name="api/contact" show={ShowGuesser} options={{label: 'Kontahenci edit only'}}/>,
             permissions.includes('ROLE_ADMIN') ?
                 <Resource name="v1/currency" options={{label: 'Waluty'}} list={CurrencyList}/> : null,
         ]}
