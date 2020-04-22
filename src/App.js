@@ -15,6 +15,7 @@ import {ContactShow} from "./contacts/ContactShow";
 import {msq} from "./i18n/translations"
 import {InvoiceCreate} from "./invoices/InvoiceCreate";
 import {MyLayout} from "./menu/leftmenu";
+import {InvoiceShow} from "./invoices/InvoiceShow";
 
 
 const httpClient = (url, options = {}) => {
@@ -34,7 +35,8 @@ const App = () =>
     <Admin layout={MyLayout} i18nProvider={i18nProvider} dashboard={Dashboard} title="Wystaw fakturę"
            authProvider={authProvider} dataProvider={dataProvider}>
         {permissions => [
-            <Resource name="api/invoice" create={InvoiceCreate} edit={EditGuesser} options={{label: 'Faktury'}}
+            <Resource name="api/invoice" create={InvoiceCreate} show={InvoiceShow} edit={EditGuesser}
+                      options={{label: 'Faktury'}}
                       list={InvoiceList}/>,
             <Resource name="api/contact" edit={ContactEdit} show={ContactShow} create={ContactCreate}
                       options={{label: 'Kontahenci'}} list={ContactList}/>,

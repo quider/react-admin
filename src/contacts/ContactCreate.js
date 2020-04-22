@@ -2,12 +2,12 @@ import {Create, SimpleForm, TextInput} from "react-admin";
 import React from "react";
 
 const styles = {
-    width : "50%"
+    width: "50%"
 }
-
+const redirect = (basePath, id, data) => `/api/contact`;
 export const ContactCreate = (props) => (
     <Create {...props}>
-        <SimpleForm redirect="list">
+        <SimpleForm redirect={"list"}>
             <TextInput style={styles} label="Nazwa" fullWidth="true" source="name"/>
             <TextInput style={styles} label="Ulica" source="mainAddressStreetName"/>
             <TextInput style={styles} label="Miasto" source="mainAddressCity"/>
