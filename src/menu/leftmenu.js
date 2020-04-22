@@ -3,7 +3,8 @@ import {getResources, Layout, MenuItemLink, showNotification} from "react-admin"
 import React, {useEffect, useState} from "react";
 import {useSelector} from 'react-redux';
 import DefaultIcon from '@material-ui/icons/ViewList';
-import LabelIcon from '@material-ui/icons/Label';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
 
 export const Menu = ({onMenuClick, logout}) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
@@ -29,6 +30,13 @@ export const Menu = ({onMenuClick, logout}) => {
 
     return (
         <div>
+            <MenuItemLink
+                to={`/`}
+                primaryText="Pulpit"
+                leftIcon={<DashboardIcon/>}
+                onClick={onMenuClick}
+                sidebarIsOpen={open}
+            />
             {resources.map(resource => (
                 resource.hasList && <MenuItemLink
                     key={resource.name}
@@ -47,7 +55,7 @@ export const Menu = ({onMenuClick, logout}) => {
             <MenuItemLink
                 to={`/api/contact/${company.id}/show`}
                 primaryText="Moja działalność"
-                leftIcon={<LabelIcon/>}
+                leftIcon={<WorkOutlineIcon/>}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
