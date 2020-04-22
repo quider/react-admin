@@ -1,5 +1,6 @@
 // in src/authProvider.js
 import decodeJwt from 'jwt-decode';
+import {showNotification} from "react-admin";
 
 export default {
     login: ({ username, password }) => {
@@ -27,7 +28,8 @@ export default {
         return Promise.resolve();
     },
     checkError: error => {
-        console.error(error );
+        showNotification(error, 'error')
+        console.error(error);
     },
     checkAuth: () => {
         let token = localStorage.getItem('token')
