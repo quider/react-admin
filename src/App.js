@@ -29,7 +29,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 };
-export const dataProvider = rest('http://localhost:8443', httpClient);
+export const dataProvider = rest(process.env.REACT_APP_URL, httpClient);
 const messages = {...polishMessages, ...msq};
 const i18nProvider = polyglotI18nProvider(() => messages, 'pl');
 
