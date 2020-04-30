@@ -4,10 +4,10 @@ import {showNotification} from "react-admin";
 
 export default {
     login: ({ username, password }) => {
-        const request = new Request('http://localhost:8443/login', {
+        const request = new Request(`${process.env.REACT_APP_URL}/login`, {
             method: 'POST',
-            body: JSON.stringify({ username, password }),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({username, password}),
+            headers: new Headers({'Content-Type': 'application/json'}),
         });
         return fetch(request)
             .then(response => {

@@ -99,7 +99,7 @@ export const InvoiceCreate = (props) => {
                         </ReferenceInput>
                     </Box>
                     <Box flex={1} ml="0.5em" mr="0.5em">
-                        <TextInput style={{width: "10em"}} value={next} source="number"/>
+                        <TextInput style={{width: "10em"}} source="number"/>
                     </Box>
                     <Box ml="0.5em" flex={1}>
                         <SelectInput style={{width: "15em"}} label="Sposób płatnosci"
@@ -110,7 +110,7 @@ export const InvoiceCreate = (props) => {
 
                     <Box flex={11} display="flex" justifyContent="flex-end">
                         <Box style={{width: "400px"}}><ReferenceInput style={{width: "100px"}} label="Kupujący"
-                                                                      source="buyer"
+                                                                      source="buyerId"
                                                                       reference="api/contact">
                             <AutocompleteInput optionText="name" fullWidth={true}
                                                onSelect={(selected, helpers) => {

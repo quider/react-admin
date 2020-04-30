@@ -1,5 +1,5 @@
 // in src/Dashboard.js
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Card from "@material-ui/core/Card";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -10,7 +10,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import Pie from "./charts/pie";
-import DashboardCustomerList from "./dashboard/customerList";
+import {showNotification} from "react-admin";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +24,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FullWidthGrid() {
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_URL}/dashboard/top`,
+            {
+                method: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then((response) => {
+                return response.json()
+            }).then(value => {
+            console.log(value);
+            setTop(value);
+            console.log(top)
+        })
+            .catch((e) => {
+                showNotification('Error: comment not approved', 'warning')
+            });
+    }, []);
+    const [top, setTop] = useState({});
     const classes = useStyles();
     return (
         <Grid container spacing={3}>
@@ -34,7 +54,7 @@ export default function FullWidthGrid() {
                     <AssignmentIndIcon style={{fontSize: 50}}/>
                     </span>
                         <span style={{display: "block"}}>W sumie klientów</span><br/>
-                        <span style={{fontSize: 50, display: "block"}}>51</span>
+                        <span style={{fontSize: 50, display: "block"}}>{top.allCustomersCount}</span>
                     </Card>
                 </Grid>
                 <Grid item xs={2} sm={4}>
@@ -43,7 +63,7 @@ export default function FullWidthGrid() {
                     <ReceiptIcon style={{fontSize: 50}}/>
                     </span>
                         <span style={{display: "block"}}>Wystawionych faktur</span><br/>
-                        <span style={{fontSize: 50, display: "block"}}>51</span>
+                        <span style={{fontSize: 50, display: "block"}}>{top.allInvoicePositions}</span>
                     </Card>
                 </Grid>
                 <Grid item xs={2} sm={4}>
@@ -52,15 +72,15 @@ export default function FullWidthGrid() {
                     <ClearAllIcon style={{fontSize: 50}}/>
                     </span>
                         <span style={{display: "block"}}>Pozycji na fakturach</span><br/>
-                        <span style={{fontSize: 50, display: "block"}}>51</span>
+                        <span style={{fontSize: 50, display: "block"}}>{top.allInvoicesReleased}</span>
                     </Card>
                 </Grid>
                 <Grid item lg={12}>
                     <Area style={{width: "100%"}} title={"Przychód"}/>
                 </Grid>
-                <Grid item lg={12}>
-                    <DashboardCustomerList/>
-                </Grid>
+                {/*<Grid item lg={12}>*/}
+                {/*    <DashboardCustomerList/>*/}
+                {/*</Grid>*/}
             </Grid>
             <Grid item lg={6} container spacing={3}>
                 <Grid item xs={12} sm={12}>
@@ -72,7 +92,7 @@ export default function FullWidthGrid() {
                     <FavoriteBorderIcon style={{fontSize: 50}}/>
                     </span>
                         <span style={{display: "block"}}>Najlepszy klient</span><br/>
-                        <span style={{fontSize: 30, display: "block"}}>Paweł Jakiśtam fuh sp zoo</span>
+                        <span style={{fontSize: 30, display: "block"}}>{top.topCustomer}</span>
                     </Card>
                 </Grid>
                 <Grid item xs={2} sm={6}>
@@ -81,12 +101,12 @@ export default function FullWidthGrid() {
                     <TodayIcon style={{fontSize: 50}}/>
                     </span>
                         <span style={{display: "block"}}>Ostatnia faktura</span><br/>
-                        <span style={{fontSize: 40, display: "block"}}>22-04-2020</span>
+                        <span style={{fontSize: 40, display: "block"}}>{top.lastInvoice}</span>
                     </Card>
                 </Grid>
-                <Grid item lg={12}>
-                    <DashboardCustomerList/>
-                </Grid>
+                {/*<Grid item lg={12}>*/}
+                {/*    <DashboardCustomerList/>*/}
+                {/*</Grid>*/}
             </Grid>
         </Grid>
     )
