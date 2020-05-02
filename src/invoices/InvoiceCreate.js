@@ -19,7 +19,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import {useForm} from "react-final-form";
-import Box from "@material-ui/core/Box";
 
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -77,48 +76,27 @@ export const InvoiceCreate = (props) => {
     return (
         <Create {...props} >
             <SimpleForm toolbar={<PostCreateToolbar/>}>
-                <Box style={{width: "100%"}} display="flex">
-                    <Box flex={1} mr="0.5em">
                         <DateInput label="Data wystawienia" source="createDate"/>
-                    </Box>
-                    <Box flex={1} mr="0.5em">
                         <DateInput label="Data sprzedaży" source="sellDate"/>
-                    </Box>
-                    <Box flex={11}>
                         <DateInput label="Termin płatności" source="paymentTerm"/>
-                    </Box>
-                    <Box flex={2}>
                         <TextInput style={{width: "15em"}} label="Miasto" source="cityName"/>
-                    </Box>
-                </Box>
-                <Box display="flex" style={{width: "100%"}}>
-                    <Box flex={1} mr="0.5em">
                         <ReferenceInput label="Waluta" source="currency" reference="v1/currency">
                             <SelectInput defaultValue={"EUR"} optionText="name" optionValue="name"
                                          source="currency"/>
                         </ReferenceInput>
-                    </Box>
-                    <Box flex={1} ml="0.5em" mr="0.5em">
-                        <TextInput style={{width: "10em"}} source="number"/>
-                    </Box>
-                    <Box ml="0.5em" flex={1}>
-                        <SelectInput style={{width: "15em"}} label="Sposób płatnosci"
-                                     choices={[{name: "Przelew", value: "TRANSFER"}]} optionText="name"
-                                     optionValue="value" source="paymentType"/>
+                <TextInput style={{width: "10em"}} defaultValue={next} source="number"/>
+                <SelectInput style={{width: "15em"}} label="Sposób płatnosci"
+                             choices={[{name: "Przelew", value: "TRANSFER"}]} optionText="name"
+                             optionValue="value" source="paymentType"/>
 
-                    </Box>
-
-                    <Box flex={11} display="flex" justifyContent="flex-end">
-                        <Box style={{width: "400px"}}><ReferenceInput style={{width: "100px"}} label="Kupujący"
-                                                                      source="buyerId"
-                                                                      reference="api/contact">
-                            <AutocompleteInput optionText="name" fullWidth={true}
-                                               onSelect={(selected, helpers) => {
-                                                   console.log(selected);
-                                               }}/>
-                        </ReferenceInput></Box>
-                    </Box>
-                </Box>
+                <ReferenceInput style={{width: "100px"}} label="Kupujący"
+                                source="buyerId"
+                                reference="api/contact">
+                    <AutocompleteInput optionText="name" fullWidth={true}
+                                       onSelect={(selected, helpers) => {
+                                           console.log(selected);
+                                       }}/>
+                </ReferenceInput>
                 <Typography fontSize={20}>Pozycje faktury:</Typography>
                 <ArrayInput source="invoiceItems" label="Pozycje">
                     <SimpleFormIterator onChange={(e) => {
