@@ -32,9 +32,10 @@ export default {
         console.error(error);
     },
     checkAuth: () => {
-        let token = localStorage.getItem('token')
-        if (token == null){ return Promise.reject()}
-        const decodedToken = decodeJwt(token);
+        if (localStorage.getItem('token') == null) {
+            return Promise.reject()
+        }
+        const decodedToken = decodeJwt(localStorage.getItem('token'));
         new Date(decodedToken.exp * 1000)
         return new Date(decodedToken.exp * 1000) > new Date() ? Promise.resolve() : Promise.reject();
     },
