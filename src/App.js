@@ -2,7 +2,6 @@
 import React from 'react';
 import {Admin, fetchUtils, Resource} from 'react-admin';
 import rest from "ra-data-simple-rest";
-import Dashboard from "./Dashboard";
 import authProvider from "./authProvider";
 import {CurrencyList} from "./currencies";
 import {InvoiceList} from "./invoices/invoiceList";
@@ -35,7 +34,7 @@ const i18nProvider = polyglotI18nProvider(() => messages, 'pl');
 
 
 const App = () =>
-    <Admin layout={MyLayout} i18nProvider={i18nProvider} dashboard={Dashboard} title="Wystaw fakturę"
+    <Admin layout={MyLayout} i18nProvider={i18nProvider} title="Wystaw fakturę"
            authProvider={authProvider} dataProvider={dataProvider}>
         {permissions => [
             <Resource name="api/invoice" create={InvoiceCreate} show={InvoiceShow} edit={InvoiceEdit}
