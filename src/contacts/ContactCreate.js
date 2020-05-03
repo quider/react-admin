@@ -4,7 +4,7 @@ import React from "react";
 const styles = {
     width: "50%"
 }
-const redirect = (basePath, id, data) => `/api/contact`;
+// const redirect = (basePath, id, data) => `/api/contact`;
 export const ContactCreate = (props) => (
     <Create {...props}>
         <SimpleForm redirect={"list"}>
